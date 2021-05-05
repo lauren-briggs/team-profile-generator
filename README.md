@@ -6,6 +6,9 @@ A Node.js command-line application that takes in information about employees on 
 
 ## Functionality Demo
 
+Screenshot showing the final browser output:
+![Screenshot showing the final browser output:](assets/team-profile-screenshot.png)
+
 Click on the screenshot below to see the video.
 
 [![User demonstration link](assets/team-profile-screenshot.png)](https://drive.google.com/file/d/1DaH-h85p1svEkvayK7c2vndqwUXYBkA_/view)
