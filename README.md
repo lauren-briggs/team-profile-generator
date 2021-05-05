@@ -4,6 +4,12 @@ A Node.js command-line application that takes in information about employees on 
 
 ## 10 Object-Oriented Programming: Team Profile Generator
 
+## Functionality Demo
+
+Click on the screenshot below to see the video.
+
+[![User demonstration link](assets/team-profile-screenshot.png)](https://drive.google.com/file/d/1DaH-h85p1svEkvayK7c2vndqwUXYBkA_/view)
+
 
 ### User Story
 
@@ -37,14 +43,6 @@ WHEN I decide to finish building my team
 THEN I exit the application, and the HTML is generated
 ```
 
-- Enter managers name
-- Enter managers id - email - office number
-- Choose to add another engineer, intern or finish building team
-- Engineer - enter engineers name - id - email - github - add another
-- Intern - enter interns name - id - email - school - add another
-- Finish building
-- Generate html
-
 ### Application Instructions
 
 The application will be invoked by using the following command:
@@ -52,76 +50,4 @@ The application will be invoked by using the following command:
 ```bash
 node index.js
 ```
-
-### Mock-Up
-
-The following image shows a mock-up of the generated HTML’s appearance and functionality:
-
-![HTML webpage titled “My Team” features five boxes listing employee names, titles, and other key info.](./Assets/10-object-oriented-programming-homework-demo.png)
-
-The styling in the image is just an example, so feel free to add your own.
-
-### Getting Started
-
-This homework will combine many of the skills we've covered so far. In addition to the User Story and Acceptance Criteria, we’ve provided some guidelines to help get started.
-
-
-
-It is recommended that you start with a directory structure that looks like the following example:
-
-```md
-__tests__/			// jest tests
-  Employee.test.js
-  Engineer.test.js
-  Intern.test.js
-  Manager.test.js
-dist/               // rendered output (HTML) and CSS style sheet
-lib/				// classes
-src/				// template helper code
-index.js			// runs the application
-```
-
-The application must include `Employee`, `Manager`, `Engineer`, and `Intern` classes. The tests for these classes (in the `_tests_` directory) must ALL pass.
-
-The first class is an `Employee` parent class with the following properties and methods:
-
-* `name`
-
-* `id`
-
-* `email`
-
-* `getName()`
-
-* `getId()`
-
-* `getEmail()`
-
-* `getRole()`&mdash;returns `'Employee'`
-
-The other three classes will extend `Employee`.
-
-In addition to `Employee`'s properties and methods, `Manager` will also have the following:
-
-* `officeNumber`
-
-* `getRole()`&mdash;overridden to return `'Manager'`
-
-In addition to `Employee`'s properties and methods, `Engineer` will also have the following:
-
-* `github`&mdash;GitHub username
-
-* `getGithub()`
-
-* `getRole()`&mdash;overridden to return `'Engineer'`
-
-In addition to `Employee`'s properties and methods, `Intern` will also have the following:
-
-* `school`
-
-* `getSchool()`
-
-* `getRole()`&mdash;overridden to return `'Intern'`
-
-Finally, although it’s not a requirement, consider adding validation to ensure that user input is in the proper format.
 
