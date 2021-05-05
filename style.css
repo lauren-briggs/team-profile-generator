@@ -1,13 +1,28 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: obviously, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgb(0, 0, 48);
+}
+
 header{
+    margin: 0px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    height: 10vh;
+    height: 20vh;
 }
 
 h1{
     color: white;
+    font-weight: 600;
+}
+h3{
+    font-weight: 500;
 }
 
 main{
@@ -15,11 +30,57 @@ main{
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 100vh;
+    height: 60vh;
 }
 
 #output-container{
-    align-items: center;
+    align-items: flex-start;
     width: 75vw;
-    height: 70vh;
+}
+
+.card-group{
+    box-shadow: 2px 2px 60px rgba(255, 255, 255, 0.35);
+}
+
+.card{
+    width: 20vw;
+    position: relative;
+    word-wrap: break-word;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25em;
+}
+
+.card-header{
+    padding: .5em 1em;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    color:  rgb(98, 98, 253);
+    background-color: rgb(234, 245, 255);
+}
+
+.card-title{
+    padding-top: 0.7em;
+}
+
+.list-group-item{
+    font-size: 16px;
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.5rem;
+    color: slategrey;
+    background-color: white;
+    border: none;
+}
+
+a:link{
+    color: slategrey;
+    text-decoration: none;
+}
+a:hover{
+    color: slateblue;
+}
+
+.manager{
+    color:  rgb(0, 0, 231);
 }

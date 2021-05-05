@@ -6,6 +6,7 @@ const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const { resolve } = require("path");
 // const { left } = require("inquirer/lib/utils/readline");
 
 
@@ -35,6 +36,10 @@ const questions = [
     },
 ]
 
+function initApp() {
+    generateHTML();
+    promptUser();
+}
 
 function promptUser() {
     inquirer.prompt(questions)
@@ -42,7 +47,6 @@ function promptUser() {
 }
 
 function handleManager(data) {
-    // console.log(`manager name: ${data.name}, manager id: ${data.id}, manager email: ${data.email}`);
     inquirer.prompt([
         {
             type: "input",
@@ -54,12 +58,13 @@ function handleManager(data) {
         .then((data2) => {
             newManager = new Manager(data.name, data.id, data.email, data2.number);
             managers.push(newManager);
+            addTeamMemberHTML(newManager);
             addAnother();
         });
 }
 
 function handleEngineer(data) {
-    console.log(`handle engineer data: ${data.another}`);
+    console.log(`Adding a new ${data.another}`);
     inquirer.prompt(questions)
         .then((data) => {
             inquirer.prompt(
@@ -74,13 +79,14 @@ function handleEngineer(data) {
             ).then((data2) => {
                 newEngineer = new Engineer(data.name, data.id, data.email, data2.github);
                 engineers.push(newEngineer);
+                addTeamMemberHTML(newEngineer);
                 addAnother();
             });
         })
 }
 
 function handleIntern(data) {
-    console.log(`handle intern data: ${data}`);
+    console.log(`Adding a new ${data.another}`);
     inquirer.prompt(questions)
         .then((data) => {
             inquirer.prompt(
@@ -95,7 +101,8 @@ function handleIntern(data) {
             ).then((data2) => {
                 newIntern = new Intern(data.name, data.id, data.email, data2.school);
                 interns.push(newIntern);
-                addAnother()
+                addTeamMemberHTML(newIntern);
+                addAnother();
             })
         });
 }
@@ -118,38 +125,123 @@ function addAnother() {
             } else if (data.another === "Intern") {
                 handleIntern(data);
             } else {
-                generateHTML();
+                finaliseHTML();
+                console.log("Finished adding employees")
+                console.log(managers);
+                console.log(interns);
+                console.log(engineers);
             }
         })
 };
 
 function generateHTML() {
-    console.log(managers);
-    console.log(interns);
-    console.log(engineers);
-
     const html = `
-        <!DOCTYPE html>
-        <html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team Profile Generator</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.typekit.net/xhi1jxe.css">
+        <link href="style.css" rel="stylesheet">
+    </head>
+    
+    <body>
+    
+        <header>
+            <h1>Team Profile</h1>
+        </header>
+        <main>
+            <section id="output-container">
+                <div class="card-group">
+    `
+    fs.writeFile("index.html", html, (err) => {
+        if (err) throw err;
+        console.log("Writing file with initial HTML");
+    })
+};
 
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Team Profile Generator</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-                    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-                <link href="style.css" rel="stylesheet">
-            </head>
+function addTeamMemberHTML(newEmployee) {
+    const name = newEmployee.getName();
+    const id = newEmployee.getID();
+    const email = newEmployee.getEmail();
+    const role = newEmployee.getRole();
 
-            <body>
+    console.log(name, id, email, role)
 
-                <header>
-                    <h1>Team Profile</h1>
-                </header>
-                <main>
-                    <section id="output-container">
-                        <div class="row row-cols-1 row-cols-md-2 g-4">
+    let newCode = "";
+
+    if (role === "Manager") {
+        const number = newEmployee.getNumber();
+        console.log("Adding Manager HTML")
+        newCode = `
+            <div class="card">
+                <div class="card-header manager">
+                    <h3 class="card-title" id="name">${name}</h3>
+                    <p>${role}</p>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">ID: #${id}</li>
+                        <li class="list-group-item"><a href="mailto:${email}">${email}</a></li>
+                        <li class="list-group-item">${number}</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    } else if (role === "Engineer") {
+        const github = newEmployee.getGithub();
+        console.log("Adding Engineer HTML")
+        newCode = `
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" id="name">${name}</h3>
+                <p>${role}</p>
+            </div>
+            <div class="card-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item">ID: #${id}</li>
+                    <li class="list-group-item"><a href="mailto:${email}">${email}</a></li>
+                    <li class="list-group-item"><a href="https://github.com/${github}"
+                            class="card-link">${github}</a></li>
+                </ul>
+            </div>
+        </div>
+        `
+    } else if (role === "Intern") {
+        const school = newEmployee.getSchool();
+        console.log("Adding Intern HTML")
+        newCode = `
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" id="name">${name}</h3>
+                <p>${role}</p>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">ID: #${id}</li>
+                    <li class="list-group-item"><a href="mailto:${email}">${email}</a></li>
+                    <li class="list-group-item">${school}</li>
+                </ul>
+            </div>
+        </div>
+        `
+    }
+    fs.appendFile("index.html", newCode, (err) => {
+        if (err) throw err;
+        console.log("Appending file with code for new employee");
+    })
+}
+
+function finaliseHTML() {
+    const finalHTML = `
+                            </div>
+
                         </div>
                     </section>
                 </main>
@@ -157,24 +249,11 @@ function generateHTML() {
             </body>
 
         </html>
-    `
-    fs.writeFile("index.html", html, (err) => {
+        `;
+    fs.appendFile("index.html", finalHTML, (err) => {
         if (err) throw err;
-        console.log("Write file")
+        console.log("Appending file with final HTML");
     })
-};
+}
 
-// function addTeamMember(){
-//     <div class="card border-info mb-3">
-//     <div class="card-header" id="position">Header</div>
-//     <div class="card-body">
-//         <h5 class="card-title" id="name">Info card title</h5>
-//         <p class="card-text">Some quick example text to build on the card title and make up the bulk
-//             of
-//             the card's content.</p>
-//     </div>
-// </div>
-// </div>
-// }
-
-promptUser();
+initApp();
