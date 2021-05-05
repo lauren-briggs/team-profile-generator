@@ -6,13 +6,13 @@ const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+// const { left } = require("inquirer/lib/utils/readline");
 
 
 //  Empty array to hold employees as they are added
-const employees = [];
-const manager = [];
-const engineers = [];
-const interns = [];
+let managers = [];
+let engineers = [];
+let interns = [];
 
 const questions = [
     {
@@ -42,29 +42,26 @@ function promptUser() {
 }
 
 function handleManager(data) {
-    console.log(`manager name: ${data.name}, manager id: ${data.id}, manager email: ${data.email}`);
-    newManager = new Manager(data.name, data.id, data.email, data.number);
-    console.log(newManager);
+    // console.log(`manager name: ${data.name}, manager id: ${data.id}, manager email: ${data.email}`);
     inquirer.prompt([
         {
             type: "input",
             name: "number",
             message: "Office Number:",
             default: "9888 8888",
-        },
+        }
     ])
-        // TO DO: add office NUMBER to newManager
-        .then(addAnother);
+        .then((data2) => {
+            newManager = new Manager(data.name, data.id, data.email, data2.number);
+            managers.push(newManager);
+            addAnother();
+        });
 }
 
 function handleEngineer(data) {
     console.log(`handle engineer data: ${data.another}`);
     inquirer.prompt(questions)
         .then((data) => {
-            newEngineer = new Engineer(data.name, data.id, data.email, data.github);
-            console.log(newEngineer);
-        })
-        .then(() => {
             inquirer.prompt(
                 [
                     {
@@ -74,23 +71,18 @@ function handleEngineer(data) {
                         default: "lauren-github",
                     },
                 ]
-            )
+            ).then((data2) => {
+                newEngineer = new Engineer(data.name, data.id, data.email, data2.github);
+                engineers.push(newEngineer);
+                addAnother();
+            });
         })
-
-        // TO DO: add github data to newEngineer
-        .then(() => {
-            addAnother();
-        });
 }
 
 function handleIntern(data) {
     console.log(`handle intern data: ${data}`);
     inquirer.prompt(questions)
         .then((data) => {
-            newIntern = new Intern(data.name, data.id, data.email, data.school);
-            console.log(newIntern);
-        })
-        .then(() => {
             inquirer.prompt(
                 [
                     {
@@ -100,14 +92,11 @@ function handleIntern(data) {
                         default: "Monash",
                     },
                 ]
-            )
-                .then((data) => {
-                    // TO DO: add school data to newIntern
-                    return data.school
-                })
-        })
-        .then(() => {
-            addAnother()
+            ).then((data2) => {
+                newIntern = new Intern(data.name, data.id, data.email, data2.school);
+                interns.push(newIntern);
+                addAnother()
+            })
         });
 }
 
@@ -129,14 +118,17 @@ function addAnother() {
             } else if (data.another === "Intern") {
                 handleIntern(data);
             } else {
-                // TO DO: create a generate html function
                 generateHTML();
             }
         })
 };
 
-// fuction generateHTML(){
+function generateHTML() {
+    console.log(managers);
+    console.log(interns);
+    console.log(engineers);
 
-// };
+
+};
 
 promptUser();
