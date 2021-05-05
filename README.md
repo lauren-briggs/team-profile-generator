@@ -11,7 +11,7 @@ Screenshot showing the final browser output:
 
 Click on the screenshot below to see the video.
 
-[![User demonstration link](assets/team-profile-screenshot.png)](https://drive.google.com/file/d/1DaH-h85p1svEkvayK7c2vndqwUXYBkA_/view)
+[![User demonstration link](assets/team-profile-js-screenshot.png)](https://drive.google.com/file/d/1fjVgjZD6xARetMqjZCa-Qu5q-CUCINuC/view)
 
 
 ### User Story
